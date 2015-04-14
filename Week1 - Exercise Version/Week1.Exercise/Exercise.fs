@@ -36,7 +36,10 @@
 
     //TODO Reimplement List.map -> https://msdn.microsoft.com/en-us/library/ee370378.aspx
     // Map takes a function and a list, applies the function to each element in the list, and returns a new list of the results. 
-    let rec mapList mapping list = []
+    let rec mapList mapping list = 
+        match list with
+        | first :: remainder -> (mapping first) :: (mapList mapping remainder)
+        | [] -> []
     //TODO Reimplement List.filter -> https://msdn.microsoft.com/en-us/library/ee370294.aspx
     // Fold takes a function to test each list element (function returns a boolean) and a list. Returns a new list containly only the elements for which the predicate returned true. 
     let rec filterList predicate list = []
