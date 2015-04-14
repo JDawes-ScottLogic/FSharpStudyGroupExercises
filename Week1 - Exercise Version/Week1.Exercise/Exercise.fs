@@ -40,9 +40,17 @@
         match list with
         | first :: remainder -> (mapping first) :: (mapList mapping remainder)
         | [] -> []
+
     //TODO Reimplement List.filter -> https://msdn.microsoft.com/en-us/library/ee370294.aspx
     // Fold takes a function to test each list element (function returns a boolean) and a list. Returns a new list containly only the elements for which the predicate returned true. 
-    let rec filterList predicate list = []
+    let rec filterList predicate list = 
+        match list with
+        | [] -> []
+        | first :: remainder -> 
+            match predicate first with
+            | true -> first :: (filterList predicate remainder)
+            | false -> filterList predicate remainder
+
     //TODO Reimplement List.fold -> https://msdn.microsoft.com/en-us/library/ee353894.aspx
     // Takes a function to update the accumulated values given the input element, the initial value, and the list. returns the final accumulated value
     let rec foldList folder acc list = []
