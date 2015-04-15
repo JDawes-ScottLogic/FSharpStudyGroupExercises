@@ -27,7 +27,7 @@
     let FSharpStudyGroup = "Andrew Lee <alee@scottlogic.co.uk>; Chris Smith <csmith@scottlogic.com>; Ian Lovell <ilovell@scottlogic.co.uk>; Jason Ebbin <JEbbin@scottlogic.com>; John Dawes <JDawes@scottlogic.com>; Matthew Dunsdon <MDunsdon@scottlogic.co.uk>; Nicholas Soper <NSoper@scottlogic.com>; Richard Doyle <rdoyle@scottlogic.co.uk>; Sean O’Neill <SONeill@scottlogic.com>; Stephen Ford <SFord@scottlogic.co.uk>; Thomas Kelly <tkelly@scottlogic.com>; Tyler Ferguson <TFerguson@scottlogic.com>"
 
     //TODO Take a string and split it by ';' return a list of the split values
-    let splitStringBySemiColons (semiColonSepString : string) = ["contact1"; "contact2"; "contact3"]
+    let splitStringBySemiColons (semiColonSepString : string) = semiColonSepString.Split([|';'|]) |> Array.toList
 
     //Take a contact string, E.g. Andrew Lee <alee@scottlogic.co.uk> and parse to the Contact Type
     //let parseContact (contact:string) = {FirstName = ""; LastName=""; Email = ""; EmailExtension = CoUk}
@@ -47,7 +47,10 @@
         {FirstName = firstName; LastName=lastName; Email = email; EmailExtension = emailExtension}
 
     //TODO Return "They have a UK domain Extension, YAY!" if the extension is .co.uk. Return "Why do they have a COM domain Extension? meh." if the extension is .com
-    let getExtensionPhrase (extension:DomainExtension)  = ""
+    let getExtensionPhrase (extension:DomainExtension)  = 
+        match extension with
+        | CoUk -> "They have a UK domain Extension, YAY!"
+        | Com -> "Why do they have a COM domain Extension? meh."
 
     (*
         TODO Return one of the following strings for each Contact
@@ -55,10 +58,11 @@
         or 
         "{FirstName} {LastName} has an email of {Email}. Why do they have a COM domain Extension? meh."
     *)
-    let getContactString (contact:Contact) = ""
+    let getContactString (contact:Contact) = 
+        sprintf "%s %s has an email of %s. %s" contact.FirstName contact.LastName contact.Email (getExtensionPhrase contact.EmailExtension)
 
     //TODO create a function that calls ParseContact then calls GetContactString with the result of ParseContact
-    let transformContactString : (string -> string) = (fun a -> a.Trim())
+    let transformContactString : (string -> string) = (fun a -> getContactString (parseContact a))
     
     (*
         
@@ -74,7 +78,9 @@
         The you should be able to do this function only with the functions created above, 
         
     *)
-    let prettyPrintFSharpGroupRecords (recordsList : string list) = ()
+    let prettyPrintFSharpGroupRecords (recordsList : string list) = 
+        Exercise.mapList transformContactString recordsList
+        |> Exercise.printList
 
 
     //TODO write an accumulator function which will take the current stats, a new contact, and return the updated statistics. 
