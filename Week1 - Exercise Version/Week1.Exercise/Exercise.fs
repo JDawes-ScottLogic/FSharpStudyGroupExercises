@@ -61,4 +61,10 @@
     //TODO Reimplement List.reduce
     // Takes a function to update the accumulated values given the input element and the list. returns the final accumulated value
     //Throws an ArgumentException if the list is empty (Use invalidArg function -> https://msdn.microsoft.com/en-us/library/dd233178.aspx ) 
-    let rec reduceList reducer list = []
+    let rec reduceList reducer list = 
+        match list with
+        | [] -> invalidArg "list" "reduceList must be supplied with a non-empty list"
+        | first :: remainder ->
+            match remainder with
+            | remainderhead :: remaindertail -> reduceList reducer ((reducer first remainderhead) :: remaindertail)
+            | [] -> first
