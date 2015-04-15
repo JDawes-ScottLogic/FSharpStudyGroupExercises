@@ -53,7 +53,11 @@
 
     //TODO Reimplement List.fold -> https://msdn.microsoft.com/en-us/library/ee353894.aspx
     // Takes a function to update the accumulated values given the input element, the initial value, and the list. returns the final accumulated value
-    let rec foldList folder acc list = []
+    let rec foldList folder acc list = 
+        match list with
+        | [] -> acc
+        | first :: remainder -> foldList folder (folder acc first) remainder
+
     //TODO Reimplement List.reduce
     // Takes a function to update the accumulated values given the input element and the list. returns the final accumulated value
     //Throws an ArgumentException if the list is empty (Use invalidArg function -> https://msdn.microsoft.com/en-us/library/dd233178.aspx ) 
