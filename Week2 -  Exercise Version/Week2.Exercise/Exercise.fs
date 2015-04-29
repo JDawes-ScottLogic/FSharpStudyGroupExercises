@@ -4,18 +4,18 @@ open System.Drawing
 open System
 open Helpers
 
-let generateTree() = 
+let generateTree (startpoint, lineLength, angle) = 
     let trunk = 
-        { StartPoint = Point(1920 / 2, 0)
-          EndPoint = Point(1920 / 2, 100) }
+        { StartPoint = Point(startpoint, 0)
+          EndPoint = Point(startpoint, lineLength) }
     
     let child1 = 
-        { StartPoint = Point(1920 / 2, 100)
-          EndPoint = rotateWrtPoint (Point(1920 / 2, 200)) (Point(1920 / 2, 100)) 45.0<degree> }
+        { StartPoint = Point(startpoint, lineLength)
+          EndPoint = rotateWrtPoint (Point(startpoint, lineLength * 2)) (Point(startpoint, lineLength)) angle }
     
     let child2 = 
-        { StartPoint = Point(1920 / 2, 100)
-          EndPoint = rotateWrtPoint (Point(1920 / 2, 200)) (Point(1920 / 2, 100)) -45.0<degree> }
+        { StartPoint = Point(startpoint, lineLength)
+          EndPoint = rotateWrtPoint (Point(startpoint, lineLength * 2)) (Point(startpoint, lineLength)) -angle }
     
     seq { 
         yield seq { yield trunk }
@@ -31,7 +31,7 @@ let drawAndSaveFractalTree() =
     let blackPen = new Pen(Color.Black, 3.0f)
     use graphics = Graphics.FromImage(bmp)
     let drawLine' = drawLine graphics blackPen //You might be able to think of a better style for this. Think of this like mathematical derivation f(x) -> f'(x)
-    generateTree()
+    generateTree (width / 2, 100, 45.0<degree>)
     |> Seq.take 2
     |> Seq.concat
     |> Seq.iter drawLine'
